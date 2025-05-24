@@ -15,7 +15,7 @@ def create_book():
     chapter_1 = epub.EpubHtml(title="Chapter 1", file_name="chapter1.xhtml", lang="en")
     chapter_1.content = "<h1>Chapter 1</h1><p>This is the first chapter.</p>"
     book.add_item(chapter_1)
-    book.toc = (
+    book.toc = (  # type: ignore
         epub.Link("chapter1.xhtml", "Chapter 1", "chapter1"),
         (epub.Section("Introduction"), (chapter_1,)),
     )
