@@ -1,3 +1,5 @@
+import os
+
 import pytest
 
 from epub_translate import translate
@@ -8,10 +10,10 @@ from .utils import assert_book, create_test_book
 @pytest.fixture(autouse=True)
 def teardown():
     yield
-    # if os.path.exists("test_book.epub"):
-    #     os.remove("test_book.epub")
-    # if os.path.exists("test_book_pl.epub"):
-    #     os.remove("test_book_pl.epub")
+    if os.path.exists("test_book.epub"):
+        os.remove("test_book.epub")
+    if os.path.exists("test_book_pl.epub"):
+        os.remove("test_book_pl.epub")
 
 
 def test_translate_epub_from_en_to_pl():
