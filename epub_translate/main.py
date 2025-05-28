@@ -36,9 +36,7 @@ def _translate_chapters(
 
 def _get_chapter_content(chapter: epub.EpubHtml) -> str:
     soup = BeautifulSoup(chapter.content, "html.parser")
-    head = soup.head
-    body = soup.body
-    return str(head) + str(body)
+    return str(soup.body)
 
 
 def _translate_text(text: str, source_language: str, target_language: str) -> str:

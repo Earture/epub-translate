@@ -43,7 +43,7 @@ def test_translate_epub_from_en_to_pl():
                 "title": "Chapter 1",
                 "file_name": "chapter_1.xhtml",
                 "language": "pl",
-                "content": "<p>Próbny rozdział, który nie opowiada o niczym.</p>",
+                "content": "<p>Rozdział testowy, który nie opowiada o niczym.</p>",
             },
             {
                 "title": "Chapter 2",
