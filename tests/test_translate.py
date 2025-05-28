@@ -1,10 +1,31 @@
 import os
+from unittest import mock
 
 import pytest
 
 from epub_translate import translate
 
 from .utils import assert_book, create_test_book
+
+MOCK_TRANSLATOR = True  # Mock translator to avoid actual API calls in tests
+
+
+@pytest.fixture(autouse=True)
+def mock_translator():
+    if MOCK_TRANSLATOR:
+        with mock.patch("epub_translate.main._translate_text") as mock_translate:
+            mock_translate.side_effect = lambda text, source, target: (
+                text.replace(
+                    "A test chapter not telling about anything.",
+                    "Rozdział testowy, który nie opowiada o niczym.",
+                ).replace(
+                    "Another test chapter to translate.",
+                    "Kolejny rozdział testowy do przetłumaczenia.",
+                )
+            )
+            yield
+    else:
+        yield
 
 
 @pytest.fixture(autouse=True)
