@@ -1,5 +1,6 @@
 from ebooklib import ITEM_DOCUMENT, epub
 from openai import OpenAI
+from tqdm import tqdm
 
 
 def translate(file_path: str, target_language: str) -> None:
@@ -22,7 +23,7 @@ def _translate_items(
     book: epub.EpubBook, source_language: str, target_language: str
 ) -> None:
     chapters = book.get_items_of_type(ITEM_DOCUMENT)
-    for chapter in chapters:
+    for chapter in tqdm(chapters, total=len(book.toc), desc="Translating chapters"):
         chapter_content = chapter.content.decode()
         if "<body" not in chapter_content or 'type="toc"' in chapter_content:
             continue
