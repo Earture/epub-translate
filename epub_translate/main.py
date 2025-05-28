@@ -1,13 +1,11 @@
-import ebooklib
-from bs4 import BeautifulSoup
-from ebooklib import epub
+from ebooklib import ITEM_DOCUMENT, epub
 from openai import OpenAI
 
 
 def translate(file_path: str, target_language: str) -> None:
     book = epub.read_epub(file_path)
     source_language = book.get_metadata("DC", "language")[0][0]
-    _translate_chapters(book, source_language, target_language)
+    _translate_items(book, source_language, target_language)
     _set_new_language(book, target_language)
     new_file_path = f"{file_path.replace('.epub', '')}_{target_language}.epub"
     epub.write_epub(new_file_path, book)
@@ -20,23 +18,41 @@ def _set_new_language(book: epub.EpubBook, target_language: str) -> None:
     book.set_language(target_language)
 
 
-def _translate_chapters(
+def _translate_items(
     book: epub.EpubBook, source_language: str, target_language: str
 ) -> None:
-    chapters = book.get_items_of_type(ebooklib.ITEM_DOCUMENT)
+    chapters = book.get_items_of_type(ITEM_DOCUMENT)
     for chapter in chapters:
-        chapter_content = _get_chapter_content(chapter)
+        chapter_content = chapter.content.decode()
+        if "<body" not in chapter_content or 'type="toc"' in chapter_content:
+            continue
+        extracted_content = _extract_body_content(chapter_content)
         translated_content = _translate_text(
-            chapter_content,
+            extracted_content,
             source_language,
             target_language,
         )
-        chapter.set_content(translated_content.encode())
+        chapter.content = _replace_body_content(
+            chapter_content, translated_content
+        ).encode()
 
 
-def _get_chapter_content(chapter: epub.EpubHtml) -> str:
-    soup = BeautifulSoup(chapter.content, "html.parser")
-    return str(soup.body)
+def _extract_body_content(text: str) -> str:
+    start = text.find("<body")
+    text = text[start:]
+    start = text.find(">") + 1
+    end = text.rfind("</body>")
+    return text[start:end].strip()
+
+
+def _replace_body_content(original_text: str, new_content: str) -> str:
+    start = original_text.find("<body")
+    end = original_text.rfind("</body>")
+    return (
+        original_text[: start + original_text[start:].find(">") + 1]
+        + new_content
+        + original_text[end:]
+    )
 
 
 def _translate_text(text: str, source_language: str, target_language: str) -> str:

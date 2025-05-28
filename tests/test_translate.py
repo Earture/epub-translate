@@ -18,10 +18,12 @@ def mock_translator():
                 text.replace(
                     "A test chapter not telling about anything.",
                     "Rozdział testowy, który nie opowiada o niczym.",
-                ).replace(
+                )
+                .replace(
                     "Another test chapter to translate.",
                     "Kolejny rozdział testowy do przetłumaczenia.",
                 )
+                .replace("Chapter", "Rozdział")
             )
             yield
     else:
