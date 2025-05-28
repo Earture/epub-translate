@@ -13,18 +13,26 @@ MOCK_TRANSLATOR = True  # Mock translator to avoid actual API calls in tests
 @pytest.fixture(autouse=True)
 def mock_translator():
     if MOCK_TRANSLATOR:
-        with mock.patch("epub_translate.main._translate_text") as mock_translate:
-            mock_translate.side_effect = lambda text, source, target: (
-                text.replace(
-                    "A test chapter not telling about anything.",
-                    "Rozdział testowy, który nie opowiada o niczym.",
-                )
-                .replace(
-                    "Another test chapter to translate.",
-                    "Kolejny rozdział testowy do przetłumaczenia.",
-                )
-                .replace("Chapter", "Rozdział")
-            )
+        with mock.patch("epub_translate.main.OpenAI") as mock_openai_cls:
+            mock_client = mock.Mock()
+
+            def create_side_effect(**kwargs):
+                text = kwargs.get("input", "")
+                # Prosta logika tłumaczenia na podstawie tekstu wejściowego
+                if text == "<p>A test chapter not telling about anything.</p>":
+                    output = "<p>Rozdział testowy, który nie opowiada o niczym.</p>"
+                elif text == "<p>Another test chapter to translate.</p>":
+                    output = "```html\n<p>Kolejny rozdział testowy do przetłumaczenia.</p>```"
+                elif "Chapter" in text:
+                    output = text.replace("Chapter", "Rozdział")
+                else:
+                    output = text
+                mock_response = mock.Mock()
+                mock_response.output_text = output
+                return mock_response
+
+            mock_client.responses.create.side_effect = create_side_effect
+            mock_openai_cls.return_value = mock_client
             yield
     else:
         yield

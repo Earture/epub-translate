@@ -40,8 +40,11 @@ def assert_book(path: str, language: str, chapters: list[Chapter]) -> None:
         chapter_item = book.get_item_with_href(chapter["file_name"])
         assert chapter_item is not None
         chapter_content = chapter_item.content.decode()
-        assert chapter["content"] in chapter_content
+        chapter_content = chapter_content[
+            chapter_content.find("<body>") + 6 : chapter_content.rfind("</body>")
+        ].strip()
+        assert chapter["content"] == chapter_content
         assert (
             f'lang="{chapter["language"]}" xml:lang="{chapter["language"]}"'
-            in chapter_content
+            in chapter_item.content.decode()
         )

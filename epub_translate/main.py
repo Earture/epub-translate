@@ -69,4 +69,8 @@ def _translate_text(text: str, source_language: str, target_language: str) -> st
         input=text,
         temperature=0.0,
     )
-    return response.output_text
+    return _normalize_translation(response.output_text)
+
+
+def _normalize_translation(text: str) -> str:
+    return text[text.find("<") : text.rfind(">") + 1]
