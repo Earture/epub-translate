@@ -1,5 +1,3 @@
-import os
-
 import pytest
 
 from epub_translate import translate
@@ -10,10 +8,10 @@ from .utils import assert_book, create_test_book
 @pytest.fixture(autouse=True)
 def teardown():
     yield
-    if os.path.exists("test_book.epub"):
-        os.remove("test_book.epub")
-    if os.path.exists("test_book_pl.epub"):
-        os.remove("test_book_pl.epub")
+    # if os.path.exists("test_book.epub"):
+    #     os.remove("test_book.epub")
+    # if os.path.exists("test_book_pl.epub"):
+    #     os.remove("test_book_pl.epub")
 
 
 def test_translate_epub_from_en_to_pl():
@@ -45,13 +43,13 @@ def test_translate_epub_from_en_to_pl():
                 "title": "Chapter 1",
                 "file_name": "chapter_1.xhtml",
                 "language": "pl",
-                "content": "<p>A test chapter not telling about anything.</p>",
+                "content": "<p>Próbny rozdział, który nie opowiada o niczym.</p>",
             },
             {
                 "title": "Chapter 2",
                 "file_name": "chapter_2.xhtml",
                 "language": "pl",
-                "content": "<p>Another test chapter to translate.</p>",
+                "content": "<p>Kolejny rozdział testowy do przetłumaczenia.</p>",
             },
         ],
     )
