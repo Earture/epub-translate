@@ -19,7 +19,7 @@ def translate(
 ) -> None:
     book = epub.read_epub(file_path)
     source_language = book.get_metadata("DC", "language")[0][0]
-    _translate_items(book, source_language, target_language)
+    _translate_chapters(book, source_language, target_language)
     _set_new_language(book, target_language)
     _add_translation_chapter(book, source_language, target_language)
     new_file_path = f"{file_path.replace('.epub', '')}_{target_language}.epub"
@@ -33,7 +33,7 @@ def _set_new_language(book: epub.EpubBook, target_language: str) -> None:
     book.set_language(target_language)
 
 
-def _translate_items(
+def _translate_chapters(
     book: epub.EpubBook, source_language: str, target_language: str
 ) -> None:
     chapters = book.get_items_of_type(ITEM_DOCUMENT)
