@@ -38,18 +38,29 @@ def _translate_chapters(
 ) -> None:
     chapters = book.get_items_of_type(ITEM_DOCUMENT)
     for chapter in tqdm(chapters, total=len(book.toc), desc="Translating chapters"):
-        chapter_content = chapter.content.decode()
-        if "<body" not in chapter_content or 'type="toc"' in chapter_content:
+        if _is_not_chapter(chapter):
             continue
-        extracted_content = _extract_body_content(chapter_content)
-        translated_content = _translate_text(
-            extracted_content,
-            source_language,
-            target_language,
-        )
-        chapter.content = _replace_body_content(
-            chapter_content, translated_content
-        ).encode()
+        _translate_chapter(chapter, source_language, target_language)
+
+
+def _is_not_chapter(chapter: epub.EpubHtml) -> bool:
+    chapter_content = chapter.content.decode()
+    return "<body" not in chapter_content or 'type="toc"' in chapter_content
+
+
+def _translate_chapter(
+    chapter: epub.EpubHtml, source_language: str, target_language: str
+) -> None:
+    chapter_content = chapter.content.decode()
+    extracted_content = _extract_body_content(chapter_content)
+    translated_content = _translate_text(
+        extracted_content,
+        source_language,
+        target_language,
+    )
+    chapter.content = _replace_body_content(
+        chapter_content, translated_content
+    ).encode()
 
 
 def _extract_body_content(text: str) -> str:
