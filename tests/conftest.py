@@ -15,6 +15,18 @@ TRANSLATION = [
     ),
     ("Chapter 1", "Rozdział 1"),
     ("Chapter 2", "Rozdział 2"),
+    (
+        "This book was translated using <strong>epub-translate</strong> — a simple CLI tool that leverages ChatGPT to translate .epub books into any language.",
+        "Ta książka została przetłumaczona przy pomocy <strong>epub-translate</strong> — prostej narzędzia CLI, które wykorzystuje ChatGPT do przekładu .epub plików na dowolny język.",
+    ),
+    (
+        "You can find it on",
+        "Możesz go znaleźć na",
+    ),
+    (
+        "If the translation meets your expectations — leave a star",
+        "Jeśli tłumaczenie spełnia Twoje oczekiwania — zostaw gwiazdkę",
+    ),
 ]
 
 
@@ -37,10 +49,9 @@ def mock_translator():
                 text = kwargs.get("input", "")
                 for original, translated in TRANSLATION:
                     if original in text:
-                        output = text.replace(original, translated)
-                        break
+                        text = text.replace(original, translated)
                 mock_response = mock.Mock()
-                mock_response.output_text = output
+                mock_response.output_text = text
                 return mock_response
 
             mock_client.responses.create.side_effect = create_side_effect

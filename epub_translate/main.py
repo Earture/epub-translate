@@ -21,6 +21,7 @@ def translate(
     source_language = book.get_metadata("DC", "language")[0][0]
     _translate_items(book, source_language, target_language)
     _set_new_language(book, target_language)
+    _add_translation_chapter(book, source_language, target_language)
     new_file_path = f"{file_path.replace('.epub', '')}_{target_language}.epub"
     epub.write_epub(new_file_path, book)
 
@@ -88,3 +89,25 @@ def _translate_text(text: str, source_language: str, target_language: str) -> st
 
 def _normalize_translation(text: str) -> str:
     return text[text.find("<") : text.rfind(">") + 1]
+
+
+def _add_translation_chapter(
+    book: epub.EpubBook, source_language: str, target_language: str
+) -> None:
+    content = (
+        "<p style='font-style: italic; font-size: 0.9em;'>"
+        "This book was translated using <strong>epub-translate</strong> — a simple CLI tool that leverages ChatGPT to translate .epub books into any language."
+        "<br>"
+        "You can find it on <a href='https://github.com/SpaceShaman/epub-translate' target='_blank'>GitHub</a>. If the translation meets your expectations — leave a star ⭐!</p>"
+    )
+    content = _translate_text(content, source_language, target_language)
+    translation_chapter = epub.EpubHtml(
+        title="Translation",
+        file_name="translation.xhtml",
+        lang=target_language,
+        uid="translation",
+    )
+    translation_chapter.set_content(content)
+    book.add_item(translation_chapter)
+    book.toc.insert(0, translation_chapter)
+    book.spine.insert(0, translation_chapter)

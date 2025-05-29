@@ -31,6 +31,12 @@ def test_translate_epub_from_en_to_pl():
         language="pl",
         chapters=[
             {
+                "title": "Tłumaczenie",
+                "file_name": "translation.xhtml",
+                "language": "pl",
+                "content": '<p style="font-style: italic; font-size: 0.9em;">Ta książka została przetłumaczona przy pomocy <strong>epub-translate</strong> — prostej narzędzia CLI, które wykorzystuje ChatGPT do przekładu .epub plików na dowolny język.<br/>Możesz go znaleźć na <a href="https://github.com/SpaceShaman/epub-translate" target="_blank">GitHub</a>. Jeśli tłumaczenie spełnia Twoje oczekiwania — zostaw gwiazdkę ⭐!</p>',
+            },
+            {
                 "title": "Chapter 1",
                 "file_name": "chapter_1.xhtml",
                 "language": "pl",
