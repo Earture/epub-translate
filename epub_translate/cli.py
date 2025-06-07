@@ -1,4 +1,4 @@
-from typer import Argument, Typer
+from typer import Argument, Option, Typer
 from typing_extensions import Annotated
 
 from .config import set_config
@@ -20,20 +20,20 @@ def translate(
     translate_epub(file_path, target_language)
 
 
-@app.command(name="config")
+@app.command()
 def configure(
     api_key: Annotated[
         str | None,
-        Argument(
+        Option(
             help="OpenAI API key to use for translation. If not provided, the default config will be used.",
-            default=None,
+            show_default=False,
         ),
     ] = None,
     model: Annotated[
         str | None,
-        Argument(
+        Option(
             help="OpenAI model to use for translation. Default is 'gpt-4o'.",
-            default=None,
+            show_default=False,
         ),
     ] = None,
 ) -> None:
