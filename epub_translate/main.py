@@ -4,6 +4,8 @@ from tqdm import tqdm
 from typer import Argument, Typer
 from typing_extensions import Annotated
 
+from .config import get_config
+
 app = Typer()
 
 
@@ -82,9 +84,10 @@ def _replace_body_content(original_text: str, new_content: str) -> str:
 
 
 def _translate_text(text: str, source_language: str, target_language: str) -> str:
-    client = OpenAI()
+    config = get_config()
+    client = OpenAI(api_key=config.api_key)
     response = client.responses.create(
-        model="gpt-4o",
+        model=config.model,
         instructions=(
             "You are a book translator specialized in translating "
             "HTML content while preserving the structure and tags. "
