@@ -1,6 +1,6 @@
 import pytest
 
-from epub_translate import translate
+from epub_translate.cli import translate
 
 from .utils import assert_book, create_test_book
 

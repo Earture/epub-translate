@@ -1,24 +1,11 @@
 from ebooklib import ITEM_DOCUMENT, epub
 from openai import OpenAI
 from tqdm import tqdm
-from typer import Argument, Typer
-from typing_extensions import Annotated
 
 from .config import get_config
 
-app = Typer()
 
-
-@app.command()
-def translate(
-    file_path: Annotated[
-        str, Argument(help="Path to the EPUB file to translate, e.g., 'book.epub'.")
-    ],
-    target_language: Annotated[
-        str,
-        Argument(help="Target language code for translation, e.g., 'pl' for Polish."),
-    ],
-) -> None:
+def translate_epub(file_path: str, target_language: str) -> None:
     book = epub.read_epub(file_path)
     source_language = book.get_metadata("DC", "language")[0][0]
     _translate_chapters(book, source_language, target_language)

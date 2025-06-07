@@ -42,7 +42,7 @@ def teardown():
 @pytest.fixture(autouse=True)
 def mock_translator():
     if MOCK_TRANSLATOR:
-        with mock.patch("epub_translate.main.OpenAI") as mock_openai_cls:
+        with mock.patch("epub_translate.translator.OpenAI") as mock_openai_cls:
             mock_client = mock.Mock()
 
             def create_side_effect(**kwargs):

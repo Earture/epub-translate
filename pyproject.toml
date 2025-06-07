@@ -26,4 +26,4 @@ requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
 
 [tool.poetry.scripts]
-epub-translate = "epub_translate.main:app"
+epub-translate = "epub_translate.cli:app"
