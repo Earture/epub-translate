@@ -1,24 +1,49 @@
-# PyPI Package Template
+<div align="center">
+  <img src="assets/logo.png" width="100" alt="epub-translate">
+  <p><strong>epub-translate:</strong> a simple cli tool for translating ebooks in EPUB format into any language</p>
+</div>
 
-[![Ruff](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/astral-sh/ruff/main/assets/badge/v2.json)](https://github.com/astral-sh/ruff)
-![GitHub License](https://img.shields.io/github/license/SpaceShaman/pypi-workflow)
-![Tests](https://img.shields.io/github/actions/workflow/status/SpaceShaman/pypi-workflow/release.yml?label=tests)
-![Codecov](https://img.shields.io/codecov/c/github/SpaceShaman/pypi-workflow)
-![PyPI - Python Version](https://img.shields.io/pypi/pyversions/pypi-workflow)
-[![PyPI - Version](https://img.shields.io/pypi/v/pypi-workflow)](https://pypi.org/project/pypi-workflow)
+----
+<div align="center">
 
-This repository contains a simple template for creating PyPI packages with automated publishing using GitHub Actions. It includes the following features:
+![GitHub License](https://img.shields.io/github/license/SpaceShaman/epub-translate)
+![Tests](https://img.shields.io/github/actions/workflow/status/SpaceShaman/epub-translate/release.yml?label=tests)
+![Codecov](https://img.shields.io/codecov/c/github/SpaceShaman/epub-translate)
+![PyPI - Python Version](https://img.shields.io/pypi/pyversions/epub-translate)
+[![PyPI - Version](https://img.shields.io/pypi/v/epub-translate)](https://pypi.org/project/epub-translate)
+[![Typer](https://img.shields.io/badge/cli-Typer-blue?logo=typer&logoColor=blue)](https://typer.tiangolo.com/)
+[![Code style: black](https://img.shields.io/badge/code%20style-black-black)](https://github.com/psf/black)
+[![Linting: Ruff](https://img.shields.io/badge/linting-Ruff-black?logo=ruff&logoColor=black)](https://github.com/astral-sh/ruff)
+[![Pytest](https://img.shields.io/badge/testing-Pytest-red?logo=pytest&logoColor=red)](https://docs.pytest.org/)
 
-- **Automated Publishing**:
-  - New versions are published to Test PyPI when a new tag with a semantic version is pushed.
-  - New releases trigger the build and publication of the package to the official PyPI.
+</div>
 
-- **Continuous Integration/Continuous Deployment (CI/CD)**:
-  - Automated testing using `pytest`.
-  - Coverage reports generated with `pytest-cov` and uploaded to Codecov.
+## Installation
 
-- **Secrets Configuration**:
-  - Requires `PYPI_TOKEN` and `TEST_PYPI_TOKEN` for publishing.
-  - Requires `CODECOV_TOKEN` for generating the coverage badge.
+You can install `epub-translate` using pip:
 
-This template streamlines the process of developing, testing, and publishing Python packages, ensuring a smooth and automated workflow.
+```bash
+pip install epub-translate
+```
+
+## Usage
+
+You can use `epub-translate` from the command line:
+
+```bash
+epub-translate translate <input_file> <output_language>
+```
+
+## Configuration
+
+Before you can use `epub-translate`, you need to configure it with your OpenAI API key. You can do this using the following command:
+
+```bash
+epub-translate configure --api-key <your_openai_api_key>
+```
+
+You can also set the specific model you want to use for translation:
+
+```bash
+epub-translate configure --model <your_model_name>
+```
