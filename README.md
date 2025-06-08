@@ -9,10 +9,10 @@
 ----
 <div align="center">
 
-![GitHub License](https://img.shields.io/github/license/SpaceShaman/epub-translate)
-![Tests](https://img.shields.io/github/actions/workflow/status/SpaceShaman/epub-translate/release.yml?label=tests)
-![Codecov](https://img.shields.io/codecov/c/github/SpaceShaman/epub-translate)
-![PyPI - Python Version](https://img.shields.io/pypi/pyversions/epub-translate)
+[![GitHub License](https://img.shields.io/github/license/SpaceShaman/epub-translate)](https://github.com/SpaceShaman/epub-translate?tab=MIT-1-ov-file)
+[![Tests](https://img.shields.io/github/actions/workflow/status/SpaceShaman/epub-translate/release.yml?label=tests)](https://app.codecov.io/github/SpaceShaman/epub-translate)
+[![Codecov](https://img.shields.io/codecov/c/github/SpaceShaman/epub-translate)](https://app.codecov.io/github/SpaceShaman/epub-translate)
+[![PyPI - Python Version](https://img.shields.io/pypi/pyversions/epub-translate)](https://pypi.org/project/epub-translate)
 [![PyPI - Version](https://img.shields.io/pypi/v/epub-translate)](https://pypi.org/project/epub-translate)
 [![Typer](https://img.shields.io/badge/cli-Typer-blue?logo=typer&logoColor=blue)](https://typer.tiangolo.com/)
 [![Code style: black](https://img.shields.io/badge/code%20style-black-black)](https://github.com/psf/black)
