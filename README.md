@@ -1,7 +1,7 @@
 <div align="center">
   <picture>
-    <source media="(prefers-color-scheme: dark)" srcset="assets/logo-light.png" width="100" alt="epub-translate">
-    <img src="assets/logo-dark.png" width="100" alt="epub-translate">
+    <source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/SpaceShaman/epub-translate/refs/heads/master/assets/logo-light.png" width="100" alt="epub-translate">
+    <img src="https://raw.githubusercontent.com/SpaceShaman/epub-translate/refs/heads/master/assets/logo-dark.png" width="100" alt="epub-translate">
   </picture>
   <p><strong>epub-translate:</strong> a simple cli tool for translating ebooks in EPUB format into any language</p>
 </div>
