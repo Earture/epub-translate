@@ -1,12 +1,13 @@
 [tool.poetry]
 name = "epub-translate"
-version = "0.1.0"
-description = ""
+version = "0.0.1"
+description = "Simple cli tool for translating ebooks in EPUB format into any language."
 license = "MIT"
 authors = ["SpaceShaman <spaceshaman@tuta.io>"]
 readme = "README.md"
 homepage = "https://github.com/SpaceShaman/epub-translate"
 repository = "https://github.com/SpaceShaman/epub-translate"
+keywords = ["epub", "ebook", "translate", "cli", "translation", "translator"]
 
 [tool.poetry.dependencies]
 python = ">=3.10.0,<4.0.0"
