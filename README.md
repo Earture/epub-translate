@@ -39,10 +39,10 @@ epub-translate translate <input_file> <output_language>
 
 ## Configuration
 
-Before you can use `epub-translate`, you need to configure it with your OpenAI API key. You can do this using the following command:
+Before you can use `epub-translate`, you need to configure it with your OpenAI API key/Local LLM server. You can do this using the following command:
 
 ```bash
-epub-translate configure --api-key <your_openai_api_key>
+epub-translate configure --api-key <your_openai_api_key> --api-base <your_custom_openai_api_url>
 ```
 
 You can also set the specific model you want to use for translation:
