@@ -1,6 +1,8 @@
 from ebooklib import ITEM_DOCUMENT, epub
 from openai import OpenAI
 from tqdm import tqdm
+import re
+from typing import List
 
 from .config import get_config
 
@@ -69,23 +71,60 @@ def _replace_body_content(original_text: str, new_content: str) -> str:
         + original_text[end:]
     )
 
+def _split_html_blocks(text: str, max_chars: int = 2000) -> List[str]:
+    # 使用常见 HTML 块级标签作为切分依据（p/div/li/section/article 等）
+    pattern = re.compile(r"(</?(p|div|li|section|article|blockquote)[^>]*>.*?</\2>)", re.DOTALL | re.IGNORECASE)
+    blocks = pattern.findall(text)
+
+    segments = []
+    buffer = ""
+    for block, _ in blocks:
+        if len(buffer) + len(block) > max_chars:
+            segments.append(buffer)
+            buffer = ""
+        buffer += block
+    if buffer:
+        segments.append(buffer)
+
+    return segments if segments else [text]
+
 
 def _translate_text(text: str, source_language: str, target_language: str) -> str:
     config = get_config()
-    client = OpenAI(api_key=config.api_key)
-    response = client.responses.create(
-        model=config.model,
-        instructions=(
-            "You are a book translator specialized in translating "
-            "HTML content while preserving the structure and tags. "
-            "Translate only the inner text of the HTML, keeping all tags intact. "
-            "Ensure the translation is accurate and contextually appropriate."
-            f"Translate from {source_language} to {target_language}."
-        ),
-        input=text,
-        temperature=0.0,
+    client = OpenAI(api_key=config.api_key, base_url=config.api_base)
+
+    system_prompt = (
+        "You are a book translator specialized in translating "
+        "HTML content while preserving the structure and tags. "
+        "Translate only the inner text of the HTML, keeping all tags intact. "
+        "Ensure the translation is accurate and contextually appropriate. "
+        f"Translate from {source_language} to {target_language}."
     )
-    return _normalize_translation(response.output_text)
+
+    # 分段处理：按<p>或<div>块切分
+    segments = _split_html_blocks(text)
+
+    translated_segments: List[str] = []
+    for segment in segments:
+        if not segment.strip():
+            continue
+        try:
+            response = client.chat.completions.create(
+                model=config.model,
+                messages=[
+                    {"role": "system", "content": system_prompt},
+                    {"role": "user", "content": segment}
+                ],
+                temperature=0.0
+            )
+            translated = response.choices[0].message.content.strip()
+            translated_segments.append(translated)
+        except Exception as e:
+            print(f"[翻译失败]：{e}")
+            translated_segments.append("[翻译失败]")
+    
+    return "\n".join(translated_segments)
+
 
 
 def _normalize_translation(text: str) -> str:
@@ -97,7 +136,7 @@ def _add_translation_chapter(
 ) -> None:
     content = (
         "<p style='font-style: italic; font-size: 0.9em;'>"
-        "This book was translated using <strong>epub-translate</strong> — a simple CLI tool that leverages ChatGPT to translate .epub books into any language."
+        "This book was translated using <strong>epub-translate-LM</strong> — a simple CLI tool that leverages LM Studio to translate .epub books into any language."
         "<br>"
         "You can find it on <a href='https://github.com/SpaceShaman/epub-translate' target='_blank'>GitHub</a>. If the translation meets your expectations — leave a star ⭐!</p>"
     )
