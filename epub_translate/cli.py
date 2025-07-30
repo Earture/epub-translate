@@ -29,6 +29,13 @@ def configure(
             show_default=False,
         ),
     ] = None,
+    api_base: Annotated[
+        str | None,
+        Option(
+            help="OpenAI API base to use for translation. If not provided, the default config will be used.",
+            show_default=False,
+        ),
+    ] = None,
     model: Annotated[
         str | None,
         Option(
@@ -37,4 +44,4 @@ def configure(
         ),
     ] = None,
 ) -> None:
-    set_config(api_key, model)
+    set_config(api_key, api_base, model)
